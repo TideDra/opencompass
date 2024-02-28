@@ -1,6 +1,7 @@
 from .base_api import BaseAPIModel
 from typing import Dict, List, Optional, Union
 from sglang import function, set_default_backend, system, user, assistant, gen, RuntimeEndpoint
+from sglang.utils import http_request
 from opencompass.utils.prompt import PromptList
 import tiktoken
 class SglangAPI(BaseAPIModel):
@@ -19,6 +20,7 @@ class SglangAPI(BaseAPIModel):
                          query_per_second=query_per_second,
                          retry=retry)
         self.url = url
+        http_request(self.url+"/flush_cache")
         self.temperature = temperature
         self.tiktoken = tiktoken
         set_default_backend(RuntimeEndpoint(url))
